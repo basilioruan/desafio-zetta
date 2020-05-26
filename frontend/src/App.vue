@@ -120,7 +120,7 @@
           <option v-for="cargo in cargos" :value="cargo" :key="cargo.id">{{cargo.nome}}</option>
         </select>
         <div v-for="perfil in perfis" :key="perfil.id">
-          <input id="opacidade" type="checkbox" v-model="perfil.id">
+          <input id="opacidade" type="checkbox" :value="perfil" v-model="usuario.perfis">
           <label id="genero" :for="perfil.id"> {{ perfil.nome }}</label>
         </div>
         <button class="waves-effect waves-light btn-small">salvar<i class="material-icons left">save</i></button>
