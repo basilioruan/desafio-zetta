@@ -5,6 +5,7 @@ import br.com.projetozetta.reposity.CargoRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CargoResource {
     @GetMapping("/cargos")
     @ApiOperation(value="Retorna uma lista de cargos")
     public List<Cargo> listarCargos(){
-        return cargoRepository.findAll();
+        return cargoRepository.findAll(Sort.by("nome"));
     }
 
     @GetMapping("/cargo/{id}")
@@ -36,16 +37,20 @@ public class CargoResource {
         return cargoRepository.save(cargo);
     }
 
-    @DeleteMapping("/cargo")
+    @DeleteMapping("/cargo/{id}")
     @ApiOperation(value="Exclui um cargo do BD")
-    public void deletarCargo(@RequestBody Cargo cargo){
-        cargoRepository.delete(cargo);
+    public void deletarCargo(@PathVariable(value="id") int id){
+        cargoRepository.deleteById(id);
     }
 
-    @PutMapping("/cargo")
+    @PutMapping("/cargo/{id}")
     @ApiOperation(value="Edita um cargo existente")
-    public Cargo atualizarCargo(@RequestBody Cargo cargo){
-        return cargoRepository.save(cargo);
+    public void atualizarCargo(@RequestBody Cargo cargo, @PathVariable(value="id") int id){
+        cargoRepository.deleteById(id);
+        cargoRepository.save(cargo);
     }
 
+    public Cargo encontrarCargo(int id) {
+        return cargoRepository.findById(id);
+    }
 }

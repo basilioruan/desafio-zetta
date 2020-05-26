@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Usuario  extends Pessoa{
 
-    @ManyToOne
+    @OneToOne
     private Cargo cargo;
 
     @ManyToMany

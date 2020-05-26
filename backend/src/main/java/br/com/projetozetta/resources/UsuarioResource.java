@@ -1,11 +1,15 @@
 package br.com.projetozetta.resources;
 
+import br.com.projetozetta.models.Cargo;
+import br.com.projetozetta.models.Perfil;
 import br.com.projetozetta.models.Usuario;
 import br.com.projetozetta.reposity.UsuarioRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -21,7 +25,7 @@ public class UsuarioResource {
     @GetMapping("/usuarios")
     @ApiOperation(value="Retorna uma lista de usuários")
     public List<Usuario> listarUsuarios(){
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAll(Sort.by("nome"));
     }
 
     @GetMapping("/usuario/{id}")
@@ -36,16 +40,17 @@ public class UsuarioResource {
         return usuarioRepository.save(usuario);
     }
 
-    @DeleteMapping("/usuario")
+    @DeleteMapping("/usuario/{id}")
     @ApiOperation(value="Exclui um usuário do BD")
-    public void deletarUsuario(@RequestBody Usuario usuario) {
-        usuarioRepository.delete(usuario);
+    public void deletarUsuario(@PathVariable(value="id") int id){
+        usuarioRepository.deleteById(id);
     }
 
-    @PutMapping("/usuario")
-    @ApiOperation(value="Atualiza um usuário no BD")
-    public Usuario atualizarUsuario(@RequestBody Usuario usuario){
-        return usuarioRepository.save(usuario);
+    @PutMapping("/usuario/{id}")
+    @ApiOperation(value="Edita um usuario existente")
+    public void atualizarUsuario(@RequestBody Usuario usuario, @PathVariable(value="id") int id){
+        usuarioRepository.deleteById(id);
+        usuarioRepository.save(usuario);
     }
 
 }
